@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3 uid="uid://ci6fm30fswr1a"]
+
+[ext_resource type="FontFile" uid="uid://ba6dakubcu3xu" path="res://assets/fonts/Space_Vagrant/Space_Vagrant/space-vagrant.ttf" id="1_p8pju"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p38p2"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.485357, 0.00100054, 0.631632, 1)
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
+[node name="menu" type="Control"]
+z_index = 5
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -203.5
+offset_top = -101.5
+offset_right = 203.5
+offset_bottom = 101.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_p8pju")
+theme_override_styles/normal = SubResource("StyleBoxFlat_p38p2")
+text = "Looks like you found your new whip! Its called LASER (Leaping Asteroid Surface Exploration Rover. This is no Asteroid, but I'm sure this will work regardless
+
+To use it, face the direction you want to leap in, and hold down [SPACE]. Release the buton to go flying!
+
+You can equip this in you skills menu! (Press Escape)
+
+This is a **Transportation** skill item"
+autowrap_mode = 3
