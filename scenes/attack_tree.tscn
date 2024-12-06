@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bb3pah2xrp7hq"]
+
+[ext_resource type="Texture2D" uid="uid://deve0ok05yco4" path="res://assets/sprites/PixelAngelStatueLite/11.png" id="1_5j4ym"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iyb8h"]
+size = Vector2(24, 27)
+
+[node name="StaticBody2D" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.0302734, 0.03125)
+texture = ExtResource("1_5j4ym")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_iyb8h")

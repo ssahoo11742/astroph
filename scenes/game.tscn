@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=4 uid="uid://d3wgbl6k1ypga"]
+[gd_scene load_steps=11 format=4 uid="uid://d3wgbl6k1ypga"]
 
 [ext_resource type="PackedScene" uid="uid://caynbcjxbv3vq" path="res://scenes/player.tscn" id="1_24wmh"]
 [ext_resource type="Texture2D" uid="uid://cnyngb6ghgsmv" path="res://assets/sprites/Alien World Platformer Kit/AlienRock1 16x16.png" id="2_0xm6l"]
 [ext_resource type="Texture2D" uid="uid://cf7loy7khb12u" path="res://assets/sprites/LunarSurface1BTileset/LunarSurface1BTileset/lunar1b_tileset_compact.png" id="3_tri66"]
+[ext_resource type="PackedScene" uid="uid://bb3pah2xrp7hq" path="res://scenes/attack_tree.tscn" id="4_d31l3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1l0pl"]
 texture = ExtResource("2_0xm6l")
@@ -924,5 +925,9 @@ z_index = 1
 z_index = 1
 position = Vector2(256, -279.375)
 shape = SubResource("RectangleShape2D_ihb6r")
+
+[node name="StaticBody2D" parent="." instance=ExtResource("4_d31l3")]
+position = Vector2(297, -598)
+scale = Vector2(2.3018, 2.33078)
 
 [connection signal="body_entered" from="transportMenuZone" to="player" method="_on_transport_menu_zone_body_entered"]
