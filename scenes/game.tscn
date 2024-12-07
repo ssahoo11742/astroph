@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=4 uid="uid://d3wgbl6k1ypga"]
+[gd_scene load_steps=13 format=4 uid="uid://d3wgbl6k1ypga"]
 
 [ext_resource type="PackedScene" uid="uid://caynbcjxbv3vq" path="res://scenes/player.tscn" id="1_24wmh"]
 [ext_resource type="Texture2D" uid="uid://cnyngb6ghgsmv" path="res://assets/sprites/Alien World Platformer Kit/AlienRock1 16x16.png" id="2_0xm6l"]
 [ext_resource type="Texture2D" uid="uid://cf7loy7khb12u" path="res://assets/sprites/LunarSurface1BTileset/LunarSurface1BTileset/lunar1b_tileset_compact.png" id="3_tri66"]
 [ext_resource type="PackedScene" uid="uid://bb3pah2xrp7hq" path="res://scenes/attack_tree.tscn" id="4_d31l3"]
+[ext_resource type="Script" path="res://scripts/attack_area.gd" id="5_tjjyl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1l0pl"]
 texture = ExtResource("2_0xm6l")
@@ -900,11 +901,14 @@ sources/1 = SubResource("TileSetAtlasSource_u03cp")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ihb6r"]
 size = Vector2(150, 73.25)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_ennf4"]
+radius = 19.08
+
 [node name="Game" type="Node2D"]
 
 [node name="player" parent="." instance=ExtResource("1_24wmh")]
 z_index = 1
-position = Vector2(-22, -10)
+position = Vector2(261, -391)
 
 [node name="Camera2D" type="Camera2D" parent="player"]
 zoom = Vector2(3.5, 3.5)
@@ -926,8 +930,16 @@ z_index = 1
 position = Vector2(256, -279.375)
 shape = SubResource("RectangleShape2D_ihb6r")
 
-[node name="StaticBody2D" parent="." instance=ExtResource("4_d31l3")]
+[node name="attack_tree" parent="." instance=ExtResource("4_d31l3")]
 position = Vector2(297, -598)
 scale = Vector2(2.3018, 2.33078)
 
+[node name="attack_tree_area" type="Area2D" parent="attack_tree"]
+script = ExtResource("5_tjjyl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_tree/attack_tree_area"]
+shape = SubResource("CircleShape2D_ennf4")
+
 [connection signal="body_entered" from="transportMenuZone" to="player" method="_on_transport_menu_zone_body_entered"]
+[connection signal="body_entered" from="attack_tree/attack_tree_area" to="player" method="_on_attack_tree_area_body_entered"]
+[connection signal="body_exited" from="attack_tree/attack_tree_area" to="player" method="_on_attack_tree_area_body_exited"]

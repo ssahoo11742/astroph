@@ -10,6 +10,7 @@ const PHYSICS_LAYER = 0  # Physics layer to check collisions
 @onready var sprite = $AnimatedSprite2D  # Reference to AnimatedSprite2D
 @onready var dialog_manager = get_node("/root/DialogManager")  # Reference to the DialogManager
 @onready var transport_menu_scene = preload("res://scenes/menu.tscn")
+@onready var transport_tree_scene = preload("res://scenes/transport_tree_menu.tscn")
 
 
 var menu_instance = null  # To track the menu instance
@@ -22,7 +23,23 @@ var button_released = false  # Track if the spacebar has been released
 var lerp_target = null  # Target position for lerping
 var jump_elapsed = 0.0  # Time elapsed during the jump
 var jump_start_position = Vector2.ZERO  # Starting position for the jump
+var attack_tree_in = false
+const JSON_PATH = "res://skills.json"  # Path to the JSON file
+var skills_data = {}  # Dictionary to hold the JSON data
 
+func load_json() -> Dictionary:
+	# Load and parse the JSON file
+	var file = FileAccess.open(JSON_PATH, FileAccess.READ)
+	if file:
+		var data = file.get_as_text()
+		file.close()
+		var json = JSON.new()  # Create an instance of the JSON class
+		var parse_result = json.parse(data)  # Parse the data
+		print("returning this", json.get_data())
+		return json.get_data()  # Use `get_data()` to access the parsed dictionary
+	return {}  # Return an empty dictionary if the file doesn't exist or is invalid
+	
+	
 func _ready() -> void:
 	# Connect the animation_finished signal
 	sprite.animation_finished.connect(on_animation_finished)
@@ -57,16 +74,17 @@ func _physics_process(delta: float) -> void:
 	# Get input direction
 	direction.x = Input.get_axis("ui_left", "ui_right")
 	direction.y = Input.get_axis("ui_up", "ui_down")
-
-	if Input.is_action_pressed("ui_accept"):  # Spacebar is held
-		if not is_mounting:
-			sprite.play(MOUNT_ANIM + last_direction)  # Play the mount animation
-			is_mounting = true
-			animation_finished = false  # Reset animation state
-			button_released = false  # Reset button release state
-	elif is_mounting:  # Spacebar is released
-		button_released = true  # Mark that the button has been released
-		check_jump_condition()  # Check if both conditions are met
+	skills_data = load_json()
+	if skills_data["laser"]["valid"] == 1:
+		if Input.is_action_pressed("ui_accept"):  # Spacebar is held
+			if not is_mounting:
+				sprite.play(MOUNT_ANIM + last_direction)  # Play the mount animation
+				is_mounting = true
+				animation_finished = false  # Reset animation state
+				button_released = false  # Reset button release state
+		elif is_mounting:  # Spacebar is released
+			button_released = true  # Mark that the button has been released
+			check_jump_condition()  # Check if both conditions are met
 
 	if not is_mounting:
 		if direction != Vector2.ZERO:
@@ -132,8 +150,17 @@ func _input(event: InputEvent) -> void:
 	# Close menu on escape key
 	if event.is_action_pressed("ui_cancel"):
 		close_menu()
+		
+	if event.is_action_pressed("interact") and attack_tree_in:
+		open_transport_menu()
 
-func open_menu() -> void:
+
+func open_transport_menu() -> void:
+	if menu_instance == null:
+		menu_instance = transport_tree_scene.instantiate()
+		add_child(menu_instance)
+
+func open_laser_menu() -> void:
 	if menu_instance == null:
 		menu_instance = transport_menu_scene.instantiate()
 		add_child(menu_instance)
@@ -147,4 +174,14 @@ func _on_transport_menu_zone_body_entered(body: Node2D) -> void:
 	if body == self: 
 		if not menu_triggered:
 			menu_triggered = true
-			open_menu()
+			open_laser_menu()
+
+
+func _on_attack_tree_area_body_entered(body: Node2D) -> void:
+	if body == self:
+		attack_tree_in = true
+
+
+func _on_attack_tree_area_body_exited(body: Node2D) -> void:
+	if body == self:
+		attack_tree_in = false
