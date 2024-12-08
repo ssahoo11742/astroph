@@ -11,6 +11,7 @@ const PHYSICS_LAYER = 0  # Physics layer to check collisions
 @onready var dialog_manager = get_node("/root/DialogManager")  # Reference to the DialogManager
 @onready var transport_menu_scene = preload("res://scenes/menu.tscn")
 @onready var transport_tree_scene = preload("res://scenes/transport_tree_menu.tscn")
+@onready var inv_scene = preload("res://scenes/inv.tscn")
 
 
 var menu_instance = null  # To track the menu instance
@@ -24,18 +25,41 @@ var lerp_target = null  # Target position for lerping
 var jump_elapsed = 0.0  # Time elapsed during the jump
 var jump_start_position = Vector2.ZERO  # Starting position for the jump
 var attack_tree_in = false
-const JSON_PATH = "res://skills.json"  # Path to the JSON file
+const JSON_PATH_SKILLS = "res://data/skills.json"  # Path to the JSON file
+const JSON_PATH_INV = "res://data/inv.json" 
 var skills_data = {}  # Dictionary to hold the JSON data
 
-func load_json() -> Dictionary:
+var msg_important_in = 0
+var msg_tutorial_in = 0
+
+func add_to_inv(name, sprite, amount):
+	var inv = load_json(JSON_PATH_INV)
+	print("inved here")
+	for i in range(1,26):
+		if(inv["inv"][str(i)]["name"] == "NULL"):
+			print("not null")
+			inv["inv"][str(i)]["name"] = name
+			inv["inv"][str(i)]["sprite"] = sprite
+			inv["inv"][str(i)]["amount"] = amount
+			break
+	
+	save_json(JSON_PATH_INV, inv)
+
+func save_json(PATH, data) -> void:
+	# Save the updated JSON data back to the file
+	var file = FileAccess.open(PATH, FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(data))
+		file.close()
+		
+func load_json(PATH) -> Dictionary:
 	# Load and parse the JSON file
-	var file = FileAccess.open(JSON_PATH, FileAccess.READ)
+	var file = FileAccess.open(PATH, FileAccess.READ)
 	if file:
 		var data = file.get_as_text()
 		file.close()
 		var json = JSON.new()  # Create an instance of the JSON class
 		var parse_result = json.parse(data)  # Parse the data
-		print("returning this", json.get_data())
 		return json.get_data()  # Use `get_data()` to access the parsed dictionary
 	return {}  # Return an empty dictionary if the file doesn't exist or is invalid
 	
@@ -74,7 +98,7 @@ func _physics_process(delta: float) -> void:
 	# Get input direction
 	direction.x = Input.get_axis("ui_left", "ui_right")
 	direction.y = Input.get_axis("ui_up", "ui_down")
-	skills_data = load_json()
+	skills_data = load_json(JSON_PATH_SKILLS)
 	if skills_data["laser"]["valid"] == 1:
 		if Input.is_action_pressed("ui_accept"):  # Spacebar is held
 			if not is_mounting:
@@ -150,9 +174,43 @@ func _input(event: InputEvent) -> void:
 	# Close menu on escape key
 	if event.is_action_pressed("ui_cancel"):
 		close_menu()
+	
+	if event.is_action_pressed("inv"):
+		# Instantiate the menu scene
+		menu_instance = inv_scene.instantiate()
 		
-	if event.is_action_pressed("interact") and attack_tree_in:
-		open_transport_menu()
+		# Add it to the current scene
+		add_child(menu_instance)
+		
+		var inventory_data = load_json(JSON_PATH_INV)["inv"]
+		
+		# Iterate over all children in the menu instance
+		for index in range(menu_instance.get_child_count()):
+			var button = menu_instance.get_child(index)
+			
+			# Check if the child is a Button (or TextureButton)
+			if button is Button:
+				var icon = "res://assets/sprites/icons/icons/" + inventory_data[str(index)]["sprite"] + ".png"
+				var icon_texture = load(icon)  # Assumes the images are named 0.png, 1.png, etc.
+				button.icon = icon_texture
+
+		
+	if event.is_action_pressed("interact"):
+		if attack_tree_in:
+			open_transport_menu()
+		elif msg_important_in:
+			var msg_important_node = get_node("../msg_important") # Adjust the path if needed
+			if msg_important_node:
+				msg_important_node.get_parent().remove_child(msg_important_node)
+				msg_important_node.queue_free()
+				add_to_inv("msg_important", "tile074", 1)
+		
+		elif msg_tutorial_in:
+			var msg_tutorial_node = get_node("../msg_tutorial") # Adjust the path if needed
+			if msg_tutorial_node:
+				msg_tutorial_node.get_parent().remove_child(msg_tutorial_node)
+				msg_tutorial_node.queue_free()
+				add_to_inv("msg_tutorial", "tile074", 1)
 
 
 func open_transport_menu() -> void:
@@ -185,3 +243,23 @@ func _on_attack_tree_area_body_entered(body: Node2D) -> void:
 func _on_attack_tree_area_body_exited(body: Node2D) -> void:
 	if body == self:
 		attack_tree_in = false
+
+
+func _on_msg_tutorial_area_body_entered(body: Node2D) -> void:
+	if body == self:
+		msg_tutorial_in = true
+
+
+func _on_msg_tutorial_area_body_exited(body: Node2D) -> void:
+	if body == self:
+		msg_tutorial_in = false
+
+
+func _on_msg_important_area_body_entered(body: Node2D) -> void:
+	if body == self:
+		msg_important_in = true
+
+
+func _on_msg_important_area_body_exited(body: Node2D) -> void:
+	if body == self:
+		msg_important_in = false

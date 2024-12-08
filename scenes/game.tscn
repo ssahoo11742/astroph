@@ -1,10 +1,12 @@
-[gd_scene load_steps=13 format=4 uid="uid://d3wgbl6k1ypga"]
+[gd_scene load_steps=17 format=4 uid="uid://d3wgbl6k1ypga"]
 
 [ext_resource type="PackedScene" uid="uid://caynbcjxbv3vq" path="res://scenes/player.tscn" id="1_24wmh"]
 [ext_resource type="Texture2D" uid="uid://cnyngb6ghgsmv" path="res://assets/sprites/Alien World Platformer Kit/AlienRock1 16x16.png" id="2_0xm6l"]
 [ext_resource type="Texture2D" uid="uid://cf7loy7khb12u" path="res://assets/sprites/LunarSurface1BTileset/LunarSurface1BTileset/lunar1b_tileset_compact.png" id="3_tri66"]
-[ext_resource type="PackedScene" uid="uid://bb3pah2xrp7hq" path="res://scenes/attack_tree.tscn" id="4_d31l3"]
+[ext_resource type="PackedScene" uid="uid://bb3pah2xrp7hq" path="res://scenes/transport_tree.tscn" id="4_d31l3"]
 [ext_resource type="Script" path="res://scripts/attack_area.gd" id="5_tjjyl"]
+[ext_resource type="PackedScene" uid="uid://ock4i6ald53v" path="res://scenes/intel_tree.tscn" id="6_nax0d"]
+[ext_resource type="PackedScene" uid="uid://b8doge06f5exn" path="res://scenes/items/msg.tscn" id="7_kk0ca"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1l0pl"]
 texture = ExtResource("2_0xm6l")
@@ -904,11 +906,17 @@ size = Vector2(150, 73.25)
 [sub_resource type="CircleShape2D" id="CircleShape2D_ennf4"]
 radius = 19.08
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_d0ct2"]
+radius = 17.3988
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qkpre"]
+radius = 12.0
+
 [node name="Game" type="Node2D"]
 
 [node name="player" parent="." instance=ExtResource("1_24wmh")]
 z_index = 1
-position = Vector2(261, -391)
+position = Vector2(-30, 9)
 
 [node name="Camera2D" type="Camera2D" parent="player"]
 zoom = Vector2(3.5, 3.5)
@@ -930,16 +938,45 @@ z_index = 1
 position = Vector2(256, -279.375)
 shape = SubResource("RectangleShape2D_ihb6r")
 
-[node name="attack_tree" parent="." instance=ExtResource("4_d31l3")]
+[node name="transport_tree" parent="." instance=ExtResource("4_d31l3")]
 position = Vector2(297, -598)
 scale = Vector2(2.3018, 2.33078)
 
-[node name="attack_tree_area" type="Area2D" parent="attack_tree"]
+[node name="transport_tree_area" type="Area2D" parent="transport_tree"]
 script = ExtResource("5_tjjyl")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="attack_tree/attack_tree_area"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="transport_tree/transport_tree_area"]
 shape = SubResource("CircleShape2D_ennf4")
 
+[node name="intel_tree" parent="." instance=ExtResource("6_nax0d")]
+position = Vector2(-37, 461)
+scale = Vector2(1.84, 1.96)
+
+[node name="intel_tree_area" type="Area2D" parent="intel_tree"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="intel_tree/intel_tree_area"]
+shape = SubResource("CircleShape2D_d0ct2")
+
+[node name="msg_tutorial" parent="." instance=ExtResource("7_kk0ca")]
+position = Vector2(46, 385)
+
+[node name="msg_tutorial_area" type="Area2D" parent="msg_tutorial"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="msg_tutorial/msg_tutorial_area"]
+shape = SubResource("CircleShape2D_qkpre")
+
+[node name="msg_important" parent="." instance=ExtResource("7_kk0ca")]
+position = Vector2(-122, 483)
+
+[node name="msg_important_area" type="Area2D" parent="msg_important"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="msg_important/msg_important_area"]
+shape = SubResource("CircleShape2D_qkpre")
+
 [connection signal="body_entered" from="transportMenuZone" to="player" method="_on_transport_menu_zone_body_entered"]
-[connection signal="body_entered" from="attack_tree/attack_tree_area" to="player" method="_on_attack_tree_area_body_entered"]
-[connection signal="body_exited" from="attack_tree/attack_tree_area" to="player" method="_on_attack_tree_area_body_exited"]
+[connection signal="body_entered" from="transport_tree/transport_tree_area" to="player" method="_on_attack_tree_area_body_entered"]
+[connection signal="body_exited" from="transport_tree/transport_tree_area" to="player" method="_on_attack_tree_area_body_exited"]
+[connection signal="body_entered" from="msg_tutorial/msg_tutorial_area" to="player" method="_on_msg_tutorial_area_body_entered"]
+[connection signal="body_exited" from="msg_tutorial/msg_tutorial_area" to="player" method="_on_msg_tutorial_area_body_exited"]
+[connection signal="body_entered" from="msg_important/msg_important_area" to="player" method="_on_msg_important_area_body_entered"]
+[connection signal="body_exited" from="msg_important/msg_important_area" to="player" method="_on_msg_important_area_body_exited"]

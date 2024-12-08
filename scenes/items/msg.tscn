@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8doge06f5exn"]
+
+[ext_resource type="Texture2D" uid="uid://dism7scm2x8io" path="res://assets/sprites/icons/spritesheet.png" id="1_u2wwr"]
+
+[node name="StaticBody2D" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_u2wwr")
+region_enabled = true
+region_rect = Rect2(32.0332, 95.1378, 15.6884, 17.4438)

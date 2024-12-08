@@ -2,7 +2,7 @@ extends Control
 
 @onready var skill_buttons = [$laser_btn]  # Replace with your button nodes
 var skills_data = {}  # Dictionary to hold the JSON data
-const JSON_PATH = "res://skills.json"  # Path to the JSON file
+const JSON_PATH = "res://data/skills.json"  # Path to the JSON file
 
 func _ready():
 	# Load the JSON file on start

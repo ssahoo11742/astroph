@@ -1,0 +1,194 @@
+[gd_scene load_steps=2 format=3 uid="uid://0ggrad4mx534"]
+
+[ext_resource type="Texture2D" uid="uid://2cu3i8c83yff" path="res://assets/sprites/inv/Free SciFi Inventory/Free SciFi Inventory/Inventory_Example_01.png" id="1_oyh5v"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -65.0
+offset_top = -66.0
+offset_right = 65.0
+offset_bottom = 81.0
+texture = ExtResource("1_oyh5v")
+
+[node name="Button1" type="Button" parent="."]
+layout_mode = 0
+offset_left = -60.0
+offset_top = -61.0
+offset_right = -36.0
+offset_bottom = -37.0
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 0
+offset_left = -36.0
+offset_top = -61.0
+offset_right = -12.0
+offset_bottom = -37.0
+
+[node name="Button3" type="Button" parent="."]
+layout_mode = 0
+offset_left = -12.0
+offset_top = -61.0
+offset_right = 12.0
+offset_bottom = -37.0
+
+[node name="Button4" type="Button" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = -61.0
+offset_right = 36.0
+offset_bottom = -37.0
+
+[node name="Button5" type="Button" parent="."]
+layout_mode = 0
+offset_left = 36.0
+offset_top = -61.0
+offset_right = 60.0
+offset_bottom = -37.0
+
+[node name="Button6" type="Button" parent="."]
+layout_mode = 0
+offset_left = -60.0
+offset_top = -37.0
+offset_right = -36.0
+offset_bottom = -13.0
+
+[node name="Button7" type="Button" parent="."]
+layout_mode = 0
+offset_left = -36.0
+offset_top = -37.0
+offset_right = -12.0
+offset_bottom = -13.0
+
+[node name="Button8" type="Button" parent="."]
+layout_mode = 0
+offset_left = -12.0
+offset_top = -37.0
+offset_right = 12.0
+offset_bottom = -13.0
+
+[node name="Button9" type="Button" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = -37.0
+offset_right = 36.0
+offset_bottom = -13.0
+
+[node name="Button10" type="Button" parent="."]
+layout_mode = 0
+offset_left = 36.0
+offset_top = -37.0
+offset_right = 60.0
+offset_bottom = -13.0
+
+[node name="Button11" type="Button" parent="."]
+layout_mode = 0
+offset_left = -60.0
+offset_top = -13.0
+offset_right = -36.0
+offset_bottom = 11.0
+
+[node name="Button12" type="Button" parent="."]
+layout_mode = 0
+offset_left = -36.0
+offset_top = -13.0
+offset_right = -12.0
+offset_bottom = 11.0
+
+[node name="Button13" type="Button" parent="."]
+layout_mode = 0
+offset_left = -12.0
+offset_top = -13.0
+offset_right = 12.0
+offset_bottom = 11.0
+
+[node name="Button14" type="Button" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = -13.0
+offset_right = 36.0
+offset_bottom = 11.0
+
+[node name="Button15" type="Button" parent="."]
+layout_mode = 0
+offset_left = 36.0
+offset_top = -13.0
+offset_right = 60.0
+offset_bottom = 11.0
+
+[node name="Button16" type="Button" parent="."]
+layout_mode = 0
+offset_left = -60.0
+offset_top = 11.0
+offset_right = -36.0
+offset_bottom = 35.0
+
+[node name="Button17" type="Button" parent="."]
+layout_mode = 0
+offset_left = -36.0
+offset_top = 11.0
+offset_right = -12.0
+offset_bottom = 35.0
+
+[node name="Button18" type="Button" parent="."]
+layout_mode = 0
+offset_left = -12.0
+offset_top = 11.0
+offset_right = 12.0
+offset_bottom = 35.0
+
+[node name="Button19" type="Button" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 11.0
+offset_right = 36.0
+offset_bottom = 35.0
+
+[node name="Button20" type="Button" parent="."]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 11.0
+offset_right = 60.0
+offset_bottom = 35.0
+
+[node name="Button21" type="Button" parent="."]
+layout_mode = 0
+offset_left = -60.0
+offset_top = 35.0
+offset_right = -36.0
+offset_bottom = 59.0
+
+[node name="Button22" type="Button" parent="."]
+layout_mode = 0
+offset_left = -36.0
+offset_top = 35.0
+offset_right = -12.0
+offset_bottom = 59.0
+
+[node name="Button23" type="Button" parent="."]
+layout_mode = 0
+offset_left = -12.0
+offset_top = 35.0
+offset_right = 12.0
+offset_bottom = 59.0
+
+[node name="Button24" type="Button" parent="."]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 35.0
+offset_right = 36.0
+offset_bottom = 59.0
+
+[node name="Button25" type="Button" parent="."]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 35.0
+offset_right = 60.0
+offset_bottom = 59.0
