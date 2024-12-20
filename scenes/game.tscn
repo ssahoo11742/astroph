@@ -973,10 +973,21 @@ position = Vector2(-122, 483)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="msg_important/msg_important_area"]
 shape = SubResource("CircleShape2D_qkpre")
 
+[node name="intMenuZone" type="Area2D" parent="."]
+z_index = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="intMenuZone"]
+z_index = 1
+position = Vector2(-31, 371)
+shape = SubResource("RectangleShape2D_ihb6r")
+
 [connection signal="body_entered" from="transportMenuZone" to="player" method="_on_transport_menu_zone_body_entered"]
 [connection signal="body_entered" from="transport_tree/transport_tree_area" to="player" method="_on_attack_tree_area_body_entered"]
 [connection signal="body_exited" from="transport_tree/transport_tree_area" to="player" method="_on_attack_tree_area_body_exited"]
+[connection signal="body_entered" from="intel_tree/intel_tree_area" to="player" method="_on_intel_tree_area_body_entered"]
+[connection signal="body_exited" from="intel_tree/intel_tree_area" to="player" method="_on_intel_tree_area_body_exited"]
 [connection signal="body_entered" from="msg_tutorial/msg_tutorial_area" to="player" method="_on_msg_tutorial_area_body_entered"]
 [connection signal="body_exited" from="msg_tutorial/msg_tutorial_area" to="player" method="_on_msg_tutorial_area_body_exited"]
 [connection signal="body_entered" from="msg_important/msg_important_area" to="player" method="_on_msg_important_area_body_entered"]
 [connection signal="body_exited" from="msg_important/msg_important_area" to="player" method="_on_msg_important_area_body_exited"]
+[connection signal="body_entered" from="intMenuZone" to="player" method="_on_int_menu_zone_body_entered"]
