@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://fqry4ia5acdk"
-path="res://.godot/imported/Enemy_dead_10006.png-baccd8358c70aafcff50046ab473d3f6.ctex"
+path="res://.godot/imported/Enemy_dead_10006.png-c66bf63ba4dd0e2b72d8b32025ef39b0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/TopView_Robot_Asset_Pack/TopView_Robot_Asset_Pack/Animation_Sheet/Enemy_dead_10006.png"
-dest_files=["res://.godot/imported/Enemy_dead_10006.png-baccd8358c70aafcff50046ab473d3f6.ctex"]
+source_file="res://assets/sprites/TopView_Robot_Asset_Pack/TopView_Robot_Asset_Pack/Enemy_dead_10006.png"
+dest_files=["res://.godot/imported/Enemy_dead_10006.png-c66bf63ba4dd0e2b72d8b32025ef39b0.ctex"]
 
 [params]
 
