@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://bk2cfbt2h3ib2"]
+
+[ext_resource type="Texture2D" uid="uid://opnos14pixxe" path="res://assets/sprites/menu/msg.jpg" id="1_0u0n8"]
+[ext_resource type="FontFile" uid="uid://ba6dakubcu3xu" path="res://assets/fonts/Space_Vagrant/Space_Vagrant/space-vagrant.ttf" id="2_436te"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -146.0
+offset_top = -94.0
+offset_right = 147.0
+offset_bottom = 95.0
+texture = ExtResource("1_0u0n8")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = -135.0
+offset_top = -83.0
+offset_right = 136.0
+offset_bottom = 84.0
+theme_override_fonts/font = ExtResource("2_436te")
+theme_override_font_sizes/font_size = 10
+text = "011011 011101 0111001 01001 10111001 101100 0011 01101101 10101 100010101 0101 01 1010101100 110101 10101 0101 010"
+autowrap_mode = 3

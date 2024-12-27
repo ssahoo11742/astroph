@@ -6,16 +6,19 @@ const TRANSLATE_DISTANCE = 200  # Distance to translate the player after mountin
 const JUMP_DURATION = 0.5  # Total time for the jump
 const JUMP_HEIGHT = 50  # Maximum height of the jump
 const PHYSICS_LAYER = 0  # Physics layer to check collisions
-
+const autopickup = ["tile074"]
 @onready var sprite = $AnimatedSprite2D  # Reference to AnimatedSprite2D
 @onready var dialog_manager = get_node("/root/DialogManager")  # Reference to the DialogManager
 @onready var transport_menu_scene = preload("res://scenes/menu.tscn")
+@onready var int_menu_scene = preload("res://scenes/int_menu.tscn")
 @onready var transport_tree_scene = preload("res://scenes/transport_tree_menu.tscn")
+@onready var intel_tree_scene = preload("res://scenes/intel_tree_menu.tscn")
+@onready var msg_scene = preload("res://scenes/msg.tscn")
 @onready var inv_scene = preload("res://scenes/inv.tscn")
 
 
 var menu_instance = null  # To track the menu instance
-var menu_triggered = false  # Ensure the menu is triggered only once
+var menu_triggered = false  # Ensure the meFnu is triggered only once
 var last_direction = "down"  # Default idle direction
 
 var is_mounting = false  # Track if the player is mounting
@@ -25,6 +28,7 @@ var lerp_target = null  # Target position for lerping
 var jump_elapsed = 0.0  # Time elapsed during the jump
 var jump_start_position = Vector2.ZERO  # Starting position for the jump
 var attack_tree_in = false
+var intel_tree_in = false
 const JSON_PATH_SKILLS = "res://data/skills.json"  # Path to the JSON file
 const JSON_PATH_INV = "res://data/inv.json" 
 var skills_data = {}  # Dictionary to hold the JSON data
@@ -67,6 +71,33 @@ func load_json(PATH) -> Dictionary:
 func _ready() -> void:
 	# Connect the animation_finished signal
 	sprite.animation_finished.connect(on_animation_finished)
+	
+	
+	var game_node = get_node("/root/Game")  # Update path if different
+
+	# Initialize a list to store Area2D nodes
+	var area2d_nodes = []
+
+	# Recursively collect all Area2D nodes
+	_find_area2d_nodes(game_node, area2d_nodes)
+
+	# Print or use the collected Area2D nodes
+	for area in area2d_nodes:
+		var sprite = area.get_parent().get_node("Sprite2D")
+		if sprite:
+			if sprite.texture.resource_path.get_file() in autopickup:
+				print("connected")
+				#area.connect("body_entered", Callable(self, "_autopickup"))
+
+func _autopickup():
+	print("green")
+	Input.action_press("interact")
+ 
+func _find_area2d_nodes(node: Node, area2d_list: Array):
+	if node is Area2D:
+		area2d_list.append(node)
+	for child in node.get_children():
+		_find_area2d_nodes(child, area2d_list)
 	
 func _physics_process(delta: float) -> void:
 	var direction = Vector2.ZERO
@@ -193,11 +224,22 @@ func _input(event: InputEvent) -> void:
 				var icon = "res://assets/sprites/icons/icons/" + inventory_data[str(index)]["sprite"] + ".png"
 				var icon_texture = load(icon)  # Assumes the images are named 0.png, 1.png, etc.
 				button.icon = icon_texture
+				# Define the function name dynamically
+				var function_name = "_on_"+inventory_data[str(index)]["name"]
 
-		
+				# Check if the function exists
+				if has_method(function_name):
+					button.connect("pressed", Callable(self, function_name))
+				else:
+					print("Function", function_name, "does not exist. Skipping connection.")
+
 	if event.is_action_pressed("interact"):
 		if attack_tree_in:
 			open_transport_menu()
+		elif intel_tree_in:
+			if menu_instance == null:
+				menu_instance = intel_tree_scene.instantiate()
+				add_child(menu_instance)
 		elif msg_important_in:
 			var msg_important_node = get_node("../msg_important") # Adjust the path if needed
 			if msg_important_node:
@@ -211,7 +253,30 @@ func _input(event: InputEvent) -> void:
 				msg_tutorial_node.get_parent().remove_child(msg_tutorial_node)
 				msg_tutorial_node.queue_free()
 				add_to_inv("msg_tutorial", "tile074", 1)
+				
+func _on_msg_tutorial():
+	close_menu()
+	if menu_instance == null:
+		menu_instance = msg_scene.instantiate()
+		add_child(menu_instance)
+	
+	var label = menu_instance.get_node("Label")
+	if label and label is Label:
+		label.text = "This is a test item to test your auto-pick up! "
+	else:
+		print("Label node not found or not of type Label")
 
+func _on_msg_important():
+	close_menu()
+	if menu_instance == null:
+		menu_instance = msg_scene.instantiate()
+		add_child(menu_instance)
+	
+	var label = menu_instance.get_node("Label")
+	if label and label is Label:
+		label.text = "54 6F 20 66 69 78 20 79 6F 75 72 20 71 75 61 6E 74 75 6D 20 74 65 6C 65 70 6F 72 74 65 72 2C 20 79 6F 75 20 68 61 76 65 20 74 6F 20 65 78 70 6C 6F 72 65 20 74 68 65 20 77 6F 72 6C 64 21 20 54 61 6C 6B 20 74 6F 20 61 6C 6C 20 74 68 72 65 65 20 56 6F 6C 75 6D 65 74 72 69 63 20 44 69 73 70 6C 61 79 20 53 74 61 74 75 65 73 20 74 6F 20 75 6E 6C 6F 63 6B 20 74 68 65 20 77 61 79 20 6F 75 74 21 0A 0A 49 74 20 77 6F 75 6C 64 20 62 65 20 6D 75 63 68 20 65 61 73 69 65 72 20 74 6F 20 72 65 61 64 20 74 68 69 73 20 69 66 20 79 6F 75 20 68 61 64 20 61 20 46 65 65 64 66 6F 72 77 61 72 64 20 4E 65 75 72 61 6C 20 4E 65 74 77 6F 72 6B 20 28 46 46 4E 29 20 74 6F 20 74 72 61 6E 73 6C 61 74 65 20 66 6F 72 20 79 6F 75 20 3A 29 "
+	else:
+		print("Label node not found or not of type Label")
 
 func open_transport_menu() -> void:
 	if menu_instance == null:
@@ -252,14 +317,45 @@ func _on_msg_tutorial_area_body_entered(body: Node2D) -> void:
 
 func _on_msg_tutorial_area_body_exited(body: Node2D) -> void:
 	if body == self:
-		msg_tutorial_in = false
+		if load_json(JSON_PATH_SKILLS)["ID3"]["valid"]:
+			collect("../msg_tutorial", "msg_tutorial", "tile074.png", 1)
+		else:
+			msg_important_in = true
 
+func collect(path, name, tile, amount):
+	var node = get_node(path)
+	if node:
+		node.get_parent().remove_child(node)
+		node.queue_free()
+		add_to_inv(name,tile,amount)
 
 func _on_msg_important_area_body_entered(body: Node2D) -> void:
 	if body == self:
-		msg_important_in = true
-
+		if load_json(JSON_PATH_SKILLS)["ID3"]["valid"]:
+			collect("../msg_important", "msg_important", "tile074.png", 1)
+		else:
+			msg_important_in = true
 
 func _on_msg_important_area_body_exited(body: Node2D) -> void:
 	if body == self:
 		msg_important_in = false
+
+
+func _on_intel_tree_area_body_entered(body: Node2D) -> void:
+	if body == self:
+		intel_tree_in = true
+	
+
+
+func _on_intel_tree_area_body_exited(body: Node2D) -> void:
+	if body == self:
+		intel_tree_in = false
+
+var intzn = 1
+func _on_int_menu_zone_body_entered(body: Node2D) -> void:
+	if body == self: 
+		if intzn:
+			intzn = 0
+			if menu_instance == null:
+				menu_instance = int_menu_scene.instantiate()
+				add_child(menu_instance)

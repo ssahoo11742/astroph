@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://cr242rulllqiq"]
+
+[ext_resource type="Script" path="res://intel_tree_menu.gd" id="1_f4k0b"]
+[ext_resource type="Texture2D" uid="uid://dhwf4drftjiag" path="res://assets/sprites/atk_tree/treeatk.jpg" id="2_mr273"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_f4k0b")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -218.0
+offset_top = -129.0
+offset_right = 221.0
+offset_bottom = 138.0
+texture = ExtResource("2_mr273")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="laser_btn" type="Button" parent="."]
+layout_mode = 0
+offset_left = 167.0
+offset_top = 64.0
+offset_right = 204.0
+offset_bottom = 101.0
+
+[connection signal="button_down" from="laser_btn" to="." method="_on_laser_btn_button_down"]
